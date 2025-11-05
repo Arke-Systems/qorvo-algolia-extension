@@ -108,10 +108,24 @@ const App: React.FC = () => {
 
     const directUpdate = () => {
       const h = targetEl.scrollHeight;
-      if (sdk.window?.updateHeight) sdk.window.updateHeight(h + 32);
-    };
+      const desired = h + 32;
+      // 1. UI Extensions / legacy API
+      if (sdk.window?.updateHeight) {
+        try { sdk.window.updateHeight(desired); return; } catch {/* ignore */}
+      }
+      // 2. Potential App SDK custom field helpers (speculative fallbacks)
+      const cf = sdk.location?.CustomField;
+      try { cf?.field?.setHeight?.(desired); } catch { /* ignore */ }
+      try { cf?.updateSize?.({ height: desired }); } catch { /* ignore */ }
+      try { cf?.setSize?.({ height: desired }); } catch { /* ignore */ }
+      try { cf?.setHeight?.(desired); } catch { /* ignore */ }
+      // 3. postRobot channel if exposed
+      try { sdk.postRobot?.send?.('updateHeight', { height: desired }); } catch { /* ignore */ }
+      // 4. Raw postMessage (may be ignored if parent not listening)
+      try { window.parent?.postMessage({ type: 'cs-sdk-height', height: desired }, '*'); } catch { /* ignore */ }
+  };
 
-    // Attempt native auto resizing (UI Extension SDK)
+  // Attempt native auto resizing (UI Extension SDK)
     if (sdk.window?.enableAutoResizing) {
       try {
         sdk.window.enableAutoResizing();
@@ -138,9 +152,16 @@ const App: React.FC = () => {
   useEffect(() => {
     if (!sdk || !containerRef.current) return;
     const h = containerRef.current.scrollHeight;
-    if (sdk.window?.updateHeight) {
-      try { sdk.window.updateHeight(h + 32); } catch {/* ignore */}
-    }
+    const desired = h + 32;
+    const cf = sdk.location?.CustomField;
+    // Try all fallbacks again when selection changes
+    try { sdk.window?.updateHeight?.(desired); } catch { /* ignore */ }
+    try { cf?.field?.setHeight?.(desired); } catch { /* ignore */ }
+    try { cf?.updateSize?.({ height: desired }); } catch { /* ignore */ }
+    try { cf?.setSize?.({ height: desired }); } catch { /* ignore */ }
+    try { cf?.setHeight?.(desired); } catch { /* ignore */ }
+    try { sdk.postRobot?.send?.('updateHeight', { height: desired }); } catch { /* ignore */ }
+    try { window.parent?.postMessage({ type: 'cs-sdk-height', height: desired }, '*'); } catch { /* ignore */ }
   }, [sdk, selected]);
 
   return (
