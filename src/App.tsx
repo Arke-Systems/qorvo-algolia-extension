@@ -41,9 +41,15 @@ const App: React.FC = () => {
   }, []);
 
   const resolveField = (sdkInstance: any) => {
-    if (!sdkInstance?.location) return null;
-    const loc = sdkInstance.location;
-    return loc.CustomField?.field || loc.EntryFieldLocation?.field || loc.FieldModifierLocation?.field || null;
+    if (!sdkInstance) return null;
+    // UI Extension SDK exposes field directly
+    if (sdkInstance.field) return sdkInstance.field;
+    // App SDK via location objects
+    if (sdkInstance.location) {
+      const loc = sdkInstance.location;
+      return loc.CustomField?.field || loc.EntryFieldLocation?.field || loc.FieldModifierLocation?.field || null;
+    }
+    return null;
   };
 
   const getLocationLabel = () => {
@@ -89,27 +95,38 @@ const App: React.FC = () => {
 
   const containerRef = useRef<HTMLDivElement | null>(null);
 
-  // Auto-resize the Contentstack field iframe to fit content
+  // Auto-resize the Contentstack field iframe or app container to fit content
   useEffect(() => {
     if (!sdk || !containerRef.current) return;
 
-    // Preferred: if SDK exposes automatic resizing helper
+    const targetEl = containerRef.current;
+
+    const directUpdate = () => {
+      const h = targetEl.scrollHeight;
+      if (sdk.window?.updateHeight) sdk.window.updateHeight(h + 32);
+    };
+
+    // Attempt native auto resizing (UI Extension SDK)
     if (sdk.window?.enableAutoResizing) {
-      try { sdk.window.enableAutoResizing(); return; } catch { /* fallback below */ }
+      try {
+        sdk.window.enableAutoResizing();
+        return; // let SDK handle it
+      } catch {/* fallback */}
     }
 
-    const updateHeight = () => {
-      if (!containerRef.current) return;
-      const h = containerRef.current.scrollHeight;
-      // Add a little padding to avoid clipping
-      sdk.window?.updateHeight?.(h + 24);
+    // ResizeObserver + MutationObserver for dynamic content changes
+    const ro = new ResizeObserver(() => directUpdate());
+    ro.observe(targetEl);
+    const mo = new MutationObserver(() => directUpdate());
+    mo.observe(targetEl, { childList: true, subtree: true });
+    // initial
+    directUpdate();
+    window.addEventListener('resize', directUpdate);
+    return () => {
+      ro.disconnect();
+      mo.disconnect();
+      window.removeEventListener('resize', directUpdate);
     };
-    // Initial sizing
-    updateHeight();
-    // Observe future changes
-    const ro = new ResizeObserver(() => updateHeight());
-    ro.observe(containerRef.current);
-    return () => ro.disconnect();
   }, [sdk]);
 
   return (
