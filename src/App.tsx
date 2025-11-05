@@ -13,7 +13,11 @@ const App: React.FC = () => {
     initContentstack()
       .then(async (theSdk) => {
         setSdk(theSdk);
-        console.log(sdk);
+        (window as any).csSdk = theSdk; // expose globally
+        console.info('[contentstack] sdk init', (theSdk as any)?.__sdkType, {
+          hasField: !!(theSdk as any)?.field,
+          windowApis: Object.keys((theSdk as any)?.window || {})
+        });
         // Attempt to load existing field data if we are in a field context
         try {
           const field = resolveField(theSdk);
