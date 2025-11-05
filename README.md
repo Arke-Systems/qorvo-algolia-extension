@@ -1,22 +1,28 @@
 # Contentstack Algolia App
 
-A custom Contentstack App that lets editors search an Algolia index and select one or more records, storing the selection back into a field (or app installation data) as JSON.
+Search an Algolia index inside Contentstack and store selected record(s) directly in a custom field.
 
 ## Features
 
-## Scripts (Next.js)
+- Next.js 14 (App Router) + React 18 + TypeScript
+- Client-only Algolia search (dynamic import to avoid SSR window issues)
+- Multi-select record persistence via `field.setData()` when in a field location (falls back to `sdk.store` if not)
+- Automatic (best‑effort) iframe resize attempts (ResizeObserver + mutation + manual recalculation)
+- Vitest + Testing Library for unit tests
 
-- `npm run dev` – start Next.js development server
-- `npm run build` – create production build (`.next`)
-- `npm run start` – start production server
-- `npm run test` – run unit tests once
-- `npm run test:watch` – watch tests
-- React + Vite + TypeScript scaffold
-- Basic testing with Vitest + Testing Library
+## Scripts
+
+| Purpose          | Command              |
+| ---------------- | -------------------- |
+| Dev server       | `npm run dev`        |
+| Production build | `npm run build`      |
+| Start prod       | `npm run start`      |
+| Run tests        | `npm run test`       |
+| Watch tests      | `npm run test:watch` |
 
 ## Environment Variables
 
-Create a `.env.local` file (or use Environment Variables in your hosting platform). Use Next.js public prefix so client code can read them:
+Create `.env.local` (or configure in hosting provider):
 
 ```
 NEXT_PUBLIC_ALGOLIA_APP_ID=YourAlgoliaAppId
@@ -24,57 +30,47 @@ NEXT_PUBLIC_ALGOLIA_API_KEY=YourSearchOnlyApiKey
 NEXT_PUBLIC_ALGOLIA_INDEX_NAME=YourIndexName
 ```
 
-- A Contentstack organization with App framework access
-- Algolia app ID, search-only API key, and index name
+These must be public (prefixed with `NEXT_PUBLIC_`) because the search happens client-side with a search-only key.
 
-## Environment Variables
+## Contentstack App Setup
 
-## Contentstack App Installation
+1. Build: `npm run build`.
+2. Deploy (Vercel / Netlify / internal) – root URL should serve the app.
+3. In Contentstack App framework, configure the App to point the field location iframe to that URL.
+4. Assign the App to the desired content type field.
+5. Open an entry – the Algolia search UI appears; selected hits are saved.
 
-1. Build the app: `npm run build`.
-2. Deploy the Next.js output (e.g., Vercel, Netlify, or your own Node server). The public URL should render the app at `/`.
-3. In Contentstack, create/update the App configuration to point the extension iframe to this URL.
-4. Assign the App to the desired field / location.
-   Create a `.env` file (or use the Contentstack App secure config) with:
+## Persistence Logic
 
-## Persisting Data
+- Field context (`sdk.location.CustomField.field`) -> `field.setData(selectedRecords)` JSON array.
+- Non-field (fallback) -> `sdk.store.set()` (installation scope) if needed.
 
-The app detects a field context via `sdk.location.CustomField`, `EntryFieldLocation`, or `FieldModifierLocation` and uses `field.setData()`; otherwise it stores into `sdk.store` as a fallback.
+## Resizing Notes
 
-```
+There is no official height API in the App SDK yet; we attempt:
+
+- ResizeObserver on root container
+- MutationObserver for dynamic content changes
+- Manual recalculation after selection changes
+
+If the iframe height remains fixed, it may be constrained by Contentstack container CSS. A future SDK method would replace these heuristics.
+
+## Removal of Legacy UI Extensions SDK
+
+Earlier versions loaded `@contentstack/ui-extensions-sdk` via a script tag. This has been removed in favor of the App SDK (`@contentstack/app-sdk`) only. All legacy event listeners (`extensionEvent`) and type declarations have been deleted. No action required for consumers.
+
 ## Future Improvements
+
 - Pagination / infinite scroll
-- Facet filtering UI using `SearchFacetCollection`
-- Single-select mode option
-- Error boundary & retry UI
-- Server-side proxy for secured Algolia operations if needed
-
-## Scripts
-
-- `npm run dev` – start local dev server
-- `npm run build` – production build
-- `npm run test` – run unit tests once
-- `npm run test:watch` – watch tests
-
-## Contentstack App Installation
-
-1. Build the app: `npm run build`.
-2. Host the `dist/` output (e.g., Netlify, Vercel, internal server).
-3. In Contentstack, create a new App and point to the hosted URL.
-4. Assign the App to entries / content types where you need Algolia selection.
-
-## Persisting Data
-
-The app attempts to detect if it's running in an entry field location and uses `field.setData(selectedRecords)`; otherwise it falls back to storing installation data if available.
-
-## Future Improvements
-
-- Add pagination / infinite scroll
-- Add configurable hit display mapping
-- Allow single-select mode option
-- Error boundary & retry UI
+- Faceted filtering
+- Single-select mode toggle
+- Hit rendering customization (mapping config)
+- Dedicated manual resize control for debugging
 
 ## License
 
 MIT
+
+```
+
 ```
