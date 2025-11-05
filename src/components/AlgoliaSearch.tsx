@@ -1,5 +1,5 @@
+"use client";
 import React, { useEffect, useState, useCallback } from 'react';
-import { searchIndex } from '../algoliaClient';
 import { SelectedRecord, AlgoliaHit, stripHtml } from '../types';
 
 interface Props {
@@ -9,7 +9,7 @@ interface Props {
   storeFullRecord?: boolean; // if true persist full hit instead of trimmed selection
 }
 
-const AlgoliaSearch: React.FC<Props> = ({ indexName = import.meta.env.VITE_ALGOLIA_INDEX_NAME, onSelectChange, mockHits, storeFullRecord = false }) => {
+const AlgoliaSearch: React.FC<Props> = ({ indexName = process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME, onSelectChange, mockHits, storeFullRecord = false }) => {
   const [query, setQuery] = useState('');
   const [hits, setHits] = useState<AlgoliaHit[]>([]);
   const [loading, setLoading] = useState(false);
@@ -18,7 +18,7 @@ const AlgoliaSearch: React.FC<Props> = ({ indexName = import.meta.env.VITE_ALGOL
 
   const performSearch = useCallback(async (q: string) => {
     if (!indexName) {
-      setError('Index name missing (VITE_ALGOLIA_INDEX_NAME)');
+      setError('Index name missing (NEXT_PUBLIC_ALGOLIA_INDEX_NAME)');
       return;
     }
     if (!q.trim()) {
@@ -28,8 +28,19 @@ const AlgoliaSearch: React.FC<Props> = ({ indexName = import.meta.env.VITE_ALGOL
     setLoading(true);
     setError(null);
     try {
-      const res = await searchIndex(indexName, q.trim());
-      setHits(res as AlgoliaHit[]);
+      const appId = process.env.NEXT_PUBLIC_ALGOLIA_APP_ID as string | undefined;
+      const apiKey = process.env.NEXT_PUBLIC_ALGOLIA_API_KEY as string | undefined;
+      if (!appId || !apiKey) throw new Error('Algolia credentials missing. Define NEXT_PUBLIC_ALGOLIA_APP_ID and NEXT_PUBLIC_ALGOLIA_API_KEY.');
+      const { algoliasearch } = await import('algoliasearch');
+      const client = algoliasearch(appId, apiKey);
+      const responses = await client.search([
+        {
+          indexName,
+          params: { query: q.trim(), hitsPerPage: 20 }
+        }
+      ] as any);
+      const first = responses.results[0] as any;
+      setHits((first?.hits || []) as AlgoliaHit[]);
     } catch (e: any) {
       setError(e.message || 'Search failed');
     } finally {

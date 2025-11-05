@@ -14,9 +14,16 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
-    "types": ["vitest", "jest-dom"]
+    "jsx": "preserve",
+    "types": ["vitest", "node"],
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
-  "include": ["src"],
-  "references": []
+  "include": ["src", "next-env.d.ts", ".next/types/**/*.ts"],
+  "references": [],
+  "exclude": ["node_modules"]
 }
