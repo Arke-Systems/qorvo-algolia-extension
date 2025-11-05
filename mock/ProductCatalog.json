@@ -1,0 +1,169 @@
+[
+  {
+    "UUID": "pa000372",
+    "PartNumber": "854550-1",
+    "Description": "69.99 MHz IF SAW Filter - CDMA Base Station",
+    "TypicalApplications": "<ul>\r\n\t<li>Base Stations</li>\r\n</ul>",
+    "CategoryNames": "Defense & Aerospace,Communications,Network Infrastructure,Point-to-Point Radio,Wireless Infrastructure,Base Stations",
+    "SearchFacetCollection": {
+      "Facets": [
+        {
+          "Name": "Products",
+          "SubFacets": []
+        },
+        {
+          "Name": "Applications",
+          "SubFacets": [
+            {
+              "Name": "Defense & Aerospace",
+              "UUID": "ca0083"
+            },
+            {
+              "Name": "Network Infrastructure",
+              "UUID": "ca0093"
+            }
+          ]
+        },
+        {
+          "Name": "Brands",
+          "SubFacets": []
+        }
+      ]
+    }
+  },
+  {
+    "UUID": "pa000001",
+    "PartNumber": "854565",
+    "Description": "350 MHz IF SAW Filter",
+    "Overview": "<p>Qorvo's 854565 is a high-performance IF SAW filter with a center frequency of 350 MHz and a 1 dB bandwidth of 1.2 MHz. It features low loss with excellent attenuation, and is designed to be used with a single ended input and output. The device is RoHS compliant and lead-free.</p>",
+    "KeyFeatures": "<ul>\r\n\t<li>Typical 1 dB bandwidth of 1.2 MHz</li>\r\n\t<li>Low loss</li>\r\n\t<li>High attenuation</li>\r\n\t<li>Single-ended operation</li>\r\n\t<li>Ceramic Surface Mount Package (SMP)</li>\r\n\t<li>Small size</li>\r\n\t<li>Dimensions: 13.30 x 6.50 x 1.75 mm</li>\r\n\t<li>Hermetically sealed</li>\r\n\t<li>RoHS compliant, lead-free</li>\r\n</ul>",
+    "TypicalApplications": "<ul>\r\n\t<li>Broadband</li>\r\n\t<li>IF Applications</li>\r\n\t<li>General Purpose</li>\r\n\t<li>Test and Measurement</li>\r\n</ul>",
+    "CategoryNames": "Defense & Aerospace,Communications,Network Infrastructure,Point-to-Point Radio,Wireless Infrastructure,Base Stations",
+    "SearchFacetCollection": {
+      "Facets": [
+        {
+          "Name": "Products",
+          "SubFacets": []
+        },
+        {
+          "Name": "Applications",
+          "SubFacets": [
+            {
+              "Name": "Defense & Aerospace",
+              "UUID": "ca0083"
+            },
+            {
+              "Name": "Network Infrastructure",
+              "UUID": "ca0093"
+            }
+          ]
+        },
+        {
+          "Name": "Brands",
+          "SubFacets": []
+        }
+      ]
+    }
+  },
+  {
+    "UUID": "pa000002",
+    "PartNumber": "854651",
+    "Description": "70 MHz IF SAW Filter - Low Loss",
+    "Overview": "<p>Qorvo's 854651 is a high rejection Intermediate Frequency (IF) filter for use in narrowband wireless communications systems. The center frequency of this filter is 70 MHz and the bandwidth is 0.5 MHz. The insertion loss is 8 dB maximum and the filter is packaged in a hermetic surface-mounted package.</p>",
+    "KeyFeatures": "<ul>\r\n\t<li>Usable bandwidth of 0.5 MHz</li>\r\n\t<li>Typical 3 dB bandwidth of 0.55 MHz</li>\r\n\t<li>Low Loss</li>\r\n\t<li>High Attenuation</li>\r\n\t<li>Single-ended operation, 50 ohms</li>\r\n\t<li>Ceramic Surface Mount Package (SMP)</li>\r\n\t<li>Hermetic</li>\r\n</ul>",
+    "TypicalApplications": "<ul>\r\n\t<li>Transceivers</li>\r\n</ul>",
+    "CategoryNames": "Defense & Aerospace,Communications,Network Infrastructure,Point-to-Point Radio,Wireless Infrastructure,Base Stations",
+    "SearchFacetCollection": {
+      "Facets": [
+        {
+          "Name": "Products",
+          "SubFacets": []
+        },
+        {
+          "Name": "Applications",
+          "SubFacets": [
+            {
+              "Name": "Defense & Aerospace",
+              "UUID": "ca0083"
+            },
+            {
+              "Name": "Network Infrastructure",
+              "UUID": "ca0093"
+            }
+          ]
+        },
+        {
+          "Name": "Brands",
+          "SubFacets": []
+        }
+      ]
+    }
+  },
+  {
+    "UUID": "pa000003",
+    "PartNumber": "854652",
+    "Description": "70 MHz IF SAW Filter - Low Loss",
+    "Overview": "<p>Qorvo's 854652 is a high-performance IF SAW filter with a center frequency of 70 MHz and a 3 dB bandwidth of 1.1 MHz. It features low loss with excellent attenuation, and is designed to be used with a single ended input and output. The device is RoHS compliant and lead-free.</p>",
+    "KeyFeatures": "<ul>\r\n\t<li>Typical 3 dB bandwidth of 1.1 MHz</li>\r\n\t<li>Low loss</li>\r\n\t<li>High attenuation</li>\r\n\t<li>Single-ended operation</li>\r\n\t<li>Ceramic Surface Mount Package (SMP)</li>\r\n\t<li>Small size</li>\r\n\t<li>Dimensions: 19.00 x 6.50 x 1.75 mm</li>\r\n\t<li>Hermetically sealed</li>\r\n\t<li>RoHS compliant, lead-free</li>\r\n</ul>",
+    "TypicalApplications": "<ul>\r\n\t<li>IF Applications</li>\r\n\t<li>General Purpose</li>\r\n</ul>",
+    "CategoryNames": "Defense & Aerospace,Communications,Network Infrastructure,Point-to-Point Radio,Wireless Infrastructure,Base Stations",
+    "SearchFacetCollection": {
+      "Facets": [
+        {
+          "Name": "Products",
+          "SubFacets": []
+        },
+        {
+          "Name": "Applications",
+          "SubFacets": [
+            {
+              "Name": "Defense & Aerospace",
+              "UUID": "ca0083"
+            },
+            {
+              "Name": "Network Infrastructure",
+              "UUID": "ca0093"
+            }
+          ]
+        },
+        {
+          "Name": "Brands",
+          "SubFacets": []
+        }
+      ]
+    }
+  },
+  {
+    "UUID": "pa000004",
+    "PartNumber": "854653",
+    "Description": "70 MHz IF SAW Filter - Low Loss",
+    "KeyFeatures": "<ul>\r\n\t<li>Usable bandwidth of 1.5 MHz</li>\r\n\t<li>Typical 3 dB bandwidth of 1.52 MHz</li>\r\n\t<li>Low loss</li>\r\n\t<li>High attenuation</li>\r\n\t<li>Single-ended operation, 50 Ohm</li>\r\n\t<li>Ceramic Surface Mount Package (SMP)</li>\r\n\t<li>Hermetic</li>\r\n</ul>",
+    "TypicalApplications": "<ul>\r\n\t<li>Transceivers</li>\r\n\t<li>IF Applications</li>\r\n\t<li>General Purpose</li>\r\n</ul>",
+    "CategoryNames": "Defense & Aerospace,Communications,Network Infrastructure,Point-to-Point Radio,Wireless Infrastructure,Base Stations",
+    "SearchFacetCollection": {
+      "Facets": [
+        {
+          "Name": "Products",
+          "SubFacets": []
+        },
+        {
+          "Name": "Applications",
+          "SubFacets": [
+            {
+              "Name": "Defense & Aerospace",
+              "UUID": "ca0083"
+            },
+            {
+              "Name": "Network Infrastructure",
+              "UUID": "ca0093"
+            }
+          ]
+        },
+        {
+          "Name": "Brands",
+          "SubFacets": []
+        }
+      ]
+    }
+  }
+]
