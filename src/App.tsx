@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { initContentstack } from './contentstack';
 import AlgoliaSearch from './components/AlgoliaSearch';
 import { SelectedRecord } from './types';
@@ -87,8 +87,33 @@ const App: React.FC = () => {
     }
   };
 
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
+  // Auto-resize the Contentstack field iframe to fit content
+  useEffect(() => {
+    if (!sdk || !containerRef.current) return;
+
+    // Preferred: if SDK exposes automatic resizing helper
+    if (sdk.window?.enableAutoResizing) {
+      try { sdk.window.enableAutoResizing(); return; } catch { /* fallback below */ }
+    }
+
+    const updateHeight = () => {
+      if (!containerRef.current) return;
+      const h = containerRef.current.scrollHeight;
+      // Add a little padding to avoid clipping
+      sdk.window?.updateHeight?.(h + 24);
+    };
+    // Initial sizing
+    updateHeight();
+    // Observe future changes
+    const ro = new ResizeObserver(() => updateHeight());
+    ro.observe(containerRef.current);
+    return () => ro.disconnect();
+  }, [sdk]);
+
   return (
-    <div style={{ fontFamily: 'Inter, Arial, sans-serif', padding: '1rem', maxWidth: 960, margin: '0 auto' }}>
+    <div ref={containerRef} style={{ fontFamily: 'Inter, Arial, sans-serif', padding: '1rem', maxWidth: 960, margin: '0 auto' }}>
       <h1 style={{ marginTop: 0 }}>Algolia Browser for Contentstack</h1>
       <p style={{ marginTop: 0, color: '#555' }}>Search and select records from your Algolia index.</p>
       <AlgoliaSearch onSelectChange={setSelected} storeFullRecord />
