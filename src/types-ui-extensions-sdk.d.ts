@@ -1,0 +1,1 @@
+declare module '@contentstack/ui-extensions-sdk';
