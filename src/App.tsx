@@ -13,6 +13,7 @@ const App: React.FC = () => {
     initContentstack()
       .then(async (theSdk) => {
         setSdk(theSdk);
+        console.log(sdk);
         // Attempt to load existing field data if we are in a field context
         try {
           const field = resolveField(theSdk);
