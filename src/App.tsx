@@ -134,6 +134,15 @@ const App: React.FC = () => {
     };
   }, [sdk]);
 
+  // Recalculate height whenever selection changes (content length often changes)
+  useEffect(() => {
+    if (!sdk || !containerRef.current) return;
+    const h = containerRef.current.scrollHeight;
+    if (sdk.window?.updateHeight) {
+      try { sdk.window.updateHeight(h + 32); } catch {/* ignore */}
+    }
+  }, [sdk, selected]);
+
   return (
     <div ref={containerRef} style={{ fontFamily: 'Inter, Arial, sans-serif', padding: '1rem', maxWidth: 960, margin: '0 auto' }}>
       <h1 style={{ marginTop: 0 }}>Algolia Browser for Contentstack</h1>
