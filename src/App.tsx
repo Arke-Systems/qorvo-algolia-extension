@@ -45,6 +45,33 @@ const App: React.FC = () => {
       });
   }, []);
 
+  // Swallow noisy postRobot "extensionEvent" messages when using App SDK instead of legacy UI Extension SDK.
+  // These events can originate from the parent (Contentstack) expecting older handlers; we provide a noop to avoid console errors.
+  useEffect(() => {
+    if (!sdk) return;
+    let detach: (() => void) | undefined;
+    try {
+      const pr = sdk.postRobot;
+      if (pr && typeof pr.on === 'function') {
+        const handler = () => { /* noop */ };
+        pr.on('extensionEvent', handler);
+        detach = () => {
+          try { pr.off?.('extensionEvent', handler); } catch {/* ignore */}
+        };
+        return detach;
+      }
+    } catch { /* ignore */ }
+    // Fallback: raw message listener
+    const messageListener = (evt: MessageEvent) => {
+      if (evt.data && evt.data.name === 'extensionEvent') {
+        // prevent bubbling error by acknowledging receipt
+        // No reply channel required; just swallow.
+      }
+    };
+    window.addEventListener('message', messageListener);
+    return () => window.removeEventListener('message', messageListener);
+  }, [sdk]);
+
   const resolveField = (sdkInstance: any) => {
     if (!sdkInstance) return null;
     // UI Extension SDK exposes field directly
