@@ -119,8 +119,15 @@ const App: React.FC = () => {
       try { cf?.updateSize?.({ height: desired }); } catch { /* ignore */ }
       try { cf?.setSize?.({ height: desired }); } catch { /* ignore */ }
       try { cf?.setHeight?.(desired); } catch { /* ignore */ }
-      // 3. postRobot channel if exposed
-      try { sdk.postRobot?.send?.('updateHeight', { height: desired }); } catch { /* ignore */ }
+      // 3. postRobot channel if exposed (correct signature: send(targetWindow, name, data, options?))
+      try {
+        const pr = sdk.postRobot;
+        if (pr && typeof pr.send === 'function') {
+          const target = window.parent || window;
+          // Some implementations expose pr.send(window, name, data). Provide a window object explicitly.
+          pr.send(target, 'updateHeight', { height: desired });
+        }
+      } catch { /* ignore */ }
       // 4. Raw postMessage (may be ignored if parent not listening)
       try { window.parent?.postMessage({ type: 'cs-sdk-height', height: desired }, '*'); } catch { /* ignore */ }
   };
@@ -160,7 +167,13 @@ const App: React.FC = () => {
     try { cf?.updateSize?.({ height: desired }); } catch { /* ignore */ }
     try { cf?.setSize?.({ height: desired }); } catch { /* ignore */ }
     try { cf?.setHeight?.(desired); } catch { /* ignore */ }
-    try { sdk.postRobot?.send?.('updateHeight', { height: desired }); } catch { /* ignore */ }
+    try {
+      const pr = sdk.postRobot;
+      if (pr && typeof pr.send === 'function') {
+        const target = window.parent || window;
+        pr.send(target, 'updateHeight', { height: desired });
+      }
+    } catch { /* ignore */ }
     try { window.parent?.postMessage({ type: 'cs-sdk-height', height: desired }, '*'); } catch { /* ignore */ }
   }, [sdk, selected]);
 

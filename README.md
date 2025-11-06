@@ -35,7 +35,7 @@ These must be public (prefixed with `NEXT_PUBLIC_`) because the search happens c
 ## Contentstack App Setup
 
 1. Build: `npm run build`.
-2. Deploy (Vercel / Netlify / internal) – root URL should serve the app.
+2. Deploy (Vercel) – root URL should serve the app.
 3. In Contentstack App framework, configure the App to point the field location iframe to that URL.
 4. Assign the App to the desired content type field.
 5. Open an entry – the Algolia search UI appears; selected hits are saved.
@@ -70,7 +70,3 @@ Earlier versions loaded `@contentstack/ui-extensions-sdk` via a script tag. This
 ## License
 
 MIT
-
-```
-
-```
